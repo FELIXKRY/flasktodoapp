@@ -1,0 +1,44 @@
+version: '3'
+services:
+  mysql-server:
+    container_name: mysql-server
+    ports:
+        - 3306:3306
+    environment:
+        - MYSQL_ROOT_PASSWORD=test123
+    volumes:
+        - /tmp:/etc/mysql/conf.d
+    image: mysql
+    networks:
+      - krblog-network
+  
+  phpmayadmin:
+    container_name: pmyadmin
+    ports:
+        - 8000:80
+    links:
+        - mysql-server:db
+    image: phpmyadmin
+    networks:
+      - krblog-network
+
+  flaskapp:
+    image: flaskweb
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql-server
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ''
+      MYSQL_DB: krblog
+      MYSQL_CURSORCLASS: DictCursor
+    networks:
+      - krblog-network
+
+networks:
+  krblog-network:
+
+volumes:
+  mysql-server:

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>Makaleler</h3>
+<hr>
+
+{% if articles %}
+<form action="/search" method = "post">
+    <input type="search" name="keyword" placeholder="Arama">
+
+    <button class = "btn btn-danger" type="submit">Ara</button>
+<hr>
+
+</form>
+
+
+
+
+<ul class="list-group">
+   {% for article in articles %}
+    <li class  = "list-group-item"><a href="article/{{article.id}}">{{article.title}}</a></li>
+
+   {% endfor %}
+  </ul>
+
+
+
+{% else %}
+<div class = "alert alert-danger">bu Blokta henüz makale bulunmuyorç</div>
+{% endif %}
+{% endblock body %}
